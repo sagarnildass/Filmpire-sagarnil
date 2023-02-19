@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   AppBar,
   IconButton,
@@ -20,6 +20,8 @@ import { Link } from "react-router-dom";
 import { ClassNames } from "@emotion/react";
 import { useTheme } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
+
+import { ColorModeContext } from "../../utils/ToggleColorMode";
 import { setUser, userSelector } from "../../features/auth";
 import useStyles from "./styles";
 import { Search, Sidebar } from "..";
@@ -32,6 +34,8 @@ const NavBar = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const theme = useTheme();
   const dispatch = useDispatch();
+
+  const colorMode = useContext(ColorModeContext);
 
   const token = localStorage.getItem("request_token");
   const sessionIdFromLocalStorage = localStorage.getItem("session_id");
@@ -73,7 +77,7 @@ const NavBar = () => {
               <Menu />
             </IconButton>
           )}
-          <IconButton color="inherit" sx={{ ml: 1 }} onClick={() => {}}>
+          <IconButton color="inherit" sx={{ ml: 1 }} onClick={colorMode.toggleColorMode}>
             {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
           {!isMobile && <Search />}
@@ -94,7 +98,7 @@ const NavBar = () => {
                 <Avatar
                   style={{ width: 30, height: 30 }}
                   alt="Profile"
-                  src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+                  src={`https:/image.tmdb.org/t/p/w200/${user?.avatar?.tmdb?.avatar_path}`}
                 />
               </Button>
             )}
