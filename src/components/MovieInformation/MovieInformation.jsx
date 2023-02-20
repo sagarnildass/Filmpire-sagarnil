@@ -64,12 +64,20 @@ const MovieInformation = () => {
       list: "/recommendations",
       movie_id: id,
     });
-  // {
-  //   data?.videos?.results &&
-  //     data?.videos?.results?.map(
-  //       (result, i) => result.type === "Trailer" &&  console.log(result, i)
-  //     );
-  // }
+
+  const movieTrailerUrlPrimary = data?.videos?.results.find(
+    (element) =>
+      element.name.toLowerCase().includes("trailer") &&
+      element.type.toLowerCase() === "trailer"
+  );
+  const movieTrailerUrlsecondary = data?.videos?.results.find(
+    (element) => element.type.toLowerCase() === "trailer"
+  );
+  // const movieTrailerUrltertiary = data?.videos?.results[0];
+
+  const movieTrailerUrl = movieTrailerUrlPrimary
+    ? movieTrailerUrlPrimary
+    : movieTrailerUrlsecondary;
 
   const [isMovieFavorited, setIsMovieFavorited] = useState(false);
   const [isMovieWatchlisted, setIsMovieWatchlisted] = useState(false);
@@ -131,12 +139,7 @@ const MovieInformation = () => {
   }
   return (
     <Grid container className={classes.containerSpaceAround}>
-      <Grid
-        item
-        sm={12}
-        lg={4}
-        style={{ display: "flex", marginBottom: "30px" }}
-      >
+      <Grid item sm={12} lg={4} style={{ marginBottom: "30px" }}>
         <img
           className={classes.poster}
           src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
@@ -310,7 +313,9 @@ const MovieInformation = () => {
             className={classes.video}
             style={{ border: "0px" }}
             title="Trailer"
-            src={`https://www.youtube.com/embed/${data.videos.results[0].key}?autoplay=1`}
+            src={`https://www.youtube.com/embed/${
+              movieTrailerUrl ? movieTrailerUrl.key : data?.videos?.results[0].key
+            }?autoplay=1`}
             allow="autoplay"
           />
         )}
