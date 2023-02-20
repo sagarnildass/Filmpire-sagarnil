@@ -43,7 +43,7 @@ const MovieInformation = () => {
   const { id } = useParams();
   const classes = useStyles();
   const dispatch = useDispatch();
-  // console.log(data);
+  
   const [open, setOpen] = useState(false);
   const { data, isFetching, error } = useGetMovieQuery(id);
   const { data: favoriteMovies } = useGetListQuery({
@@ -121,6 +121,8 @@ const MovieInformation = () => {
     );
     setIsMovieWatchlisted((prev) => !prev);
   };
+
+  console.log(data);
 
   if (isFetching) {
     return (
